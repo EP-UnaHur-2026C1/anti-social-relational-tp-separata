@@ -4,12 +4,12 @@ const validarUserIdConPosts = async (req, res, next) => {
     try {
         const { id } = req.params
         const user = await User.findByPk(id, {
-            attributes: ["nickName", "mail"]/*,
+            attributes: ["nickName", "mail"],
             include: {
                 model: Post,
                 as: "posts",
                 attributes: ["id"]
-            }*/
+            }
         })
         if (!user) {
             return res.status(404).json({ message: "Usuario no encontrado." })
