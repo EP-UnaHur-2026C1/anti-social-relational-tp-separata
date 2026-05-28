@@ -9,8 +9,18 @@ const obtenerPosts = async (req, res) => {
                     model: User,
                     as: "user",
                     attributes: ["nickName"]
+                },
+                {
+                    model: Post_Images,
+                    as: "images",
+                    attributes: ["url"]
+                },
+                {
+                    model: Tag,
+                    as: "tags",
+                    attributes: ["id", "nombre"]
                 }
-                // Agregar images, tags y comments
+                // Agregar comments
             ]
         })
         res.status(200).json(posts)
