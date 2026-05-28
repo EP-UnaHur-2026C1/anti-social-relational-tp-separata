@@ -4,6 +4,7 @@ const db = require("../models");
 const routerUser = require("../routes/users.routes");
 const routerPost = require("../routes/posts.routes");
 const routerPost_Images = require("../routes/post_images.routes");
+const routerComment = require("../routes/comments.routes");
 const routerTag = require("../routes/tags.routes");
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/user", routerUser)
 app.use("/post", routerPost)
 app.use("/post_images", routerPost_Images)
+app.use("/comment", routerComment)
 app.use("/tag", routerTag)
 
 app.listen(PORT, async () => {

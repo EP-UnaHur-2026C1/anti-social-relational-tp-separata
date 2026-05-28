@@ -11,11 +11,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Comment.belongsTo(models.Post, {
+        foreignKey: "postId",
+        as: "post"
+      })
+      Comment.belongsTo(models.User, {
+        foreignKey: "userId",
+        as: "user"
+      })
     }
   }
   Comment.init({
-    descripcion: DataTypes.STRING,
-    esVisible: DataTypes.BOOLEAN
+    descripcion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    esVisible: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    postId: {
+      type: DataTypes.INTEGER,
+      allownull: true
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allownull: false
+    }
   }, {
     sequelize,
     modelName: 'Comment',

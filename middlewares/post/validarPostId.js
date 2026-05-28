@@ -20,8 +20,12 @@ const validarPostIdConEntidades = async (req, res, next) => {
                     model: Tag,
                     as: "tags",
                     attributes: ["id", "nombre"]
+                },
+                {
+                    model: Comment,
+                    as: "comments",
+                    attributes: ["id"]
                 }
-                // Agregar comments
             ]
         })
         if (!post) {

@@ -19,8 +19,12 @@ const obtenerPosts = async (req, res) => {
                     model: Tag,
                     as: "tags",
                     attributes: ["id", "nombre"]
+                },
+                {
+                    model: Comment,
+                    as: "comments",
+                    attributes: ["id"]
                 }
-                // Agregar comments
             ]
         })
         res.status(200).json(posts)
