@@ -2,7 +2,7 @@ const { Post_Images } = require("../../models")
 
 const validarPost_ImagesId = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const id = (req.params.imageId || req.params.id)
         const post_Image = await Post_Images.findByPk(id, {
             attributes: ["id", "url", "postId"]
         })

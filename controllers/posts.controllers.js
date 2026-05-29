@@ -18,7 +18,10 @@ const obtenerPosts = async (req, res) => {
                 {
                     model: Tag,
                     as: "tags",
-                    attributes: ["id", "nombre"]
+                    attributes: ["id", "nombre"],
+                    through: {
+                        attributes: []
+                    }
                 },
                 {
                     model: Comment,
@@ -40,13 +43,10 @@ const obtenerPost = (req, res) => {
 
 const crearPost = async (req, res) => {
     try {
-        const { descripcion, userId, images, tags } = req.body
+        const { descripcion, userId } = req.body
         const post = Post.create({
             descripcion,
-            userId,
-            images,
-            tags
-            // Crear registro en post_images y tags si se envia en el body
+            userId
         })
         res.status(201).json(post)
     } catch (error) {
@@ -56,14 +56,11 @@ const crearPost = async (req, res) => {
 
 const actulizarPost = async (req, res) => {
     try {
-        const { descripcion, userId, images, tags } = req.body
+        const { descripcion, userId } = req.body
         const post = req.post
         await post.update({
             descripcion,
-            userId,
-            images,
-            tags
-            // Crear registro en post_images y tags si se envia en el body
+            userId
         })
         res.status(200).json(post)
     } catch (error) {
@@ -81,10 +78,72 @@ const eliminarPost = async (req, res) => {
     }
 }
 
+const obtenerCommentsDeUnPost = (req, res) => {
+    const post = req.post
+    res.status(200).json(post.comments)
+}
+
+const obtenerCommentDeUnPost = (req, res) => {
+    const comment = req.comment
+    res.status(200).json(comment)
+}
+
+const asociarImage = async (req, res) => {
+    try {
+        const { url } = req.body
+        const { id } = req.params
+        await Post_Images.create({
+            url,
+            postId: id
+        })
+        res.status(200).json({ message: "Image asociada correctamente" })
+    } catch (error) {
+        res.status(500).json({ message: "Error al asociar image al post" })
+    }
+}
+
+const desasociarImage = async (req, res) => {
+    try {
+        const image = req.post_Image
+        await image.destroy()
+        res.status(200).json({ message: "Image desasociada correctamente" })
+    } catch (error) {
+        res.status(500).json({ message: "Error al desasociar image al post" })
+    }
+}
+
+const asociarTag = async (req, res) => {
+    try {
+        const post = req.post
+        const tag = req.tag
+        await post.addTag(tag);
+        res.status(200).json({ message: "Tag asociada correctamente" })
+    } catch (error) {
+        res.status(500).json({ error: "Error al asociar tag al post" });
+    }
+}
+
+const desasociarTag = async (req, res) => {
+    try {
+        const post = req.post
+        const tag = req.tag
+        await post.removeTag(tag);
+        res.status(200).json({ message: "Tag desasociada correctamente" })
+    } catch (error) {
+        res.status(500).json({ error: "Error al desasociar tag al post" });
+    }
+}
+
 module.exports = {
     obtenerPosts,
     obtenerPost,
     crearPost,
     actulizarPost,
-    eliminarPost
+    eliminarPost,
+    obtenerCommentsDeUnPost,
+    obtenerCommentDeUnPost,
+    asociarImage,
+    desasociarImage,
+    asociarTag,
+    desasociarTag
 }

@@ -23,7 +23,7 @@ const validarTagIdConPost = async (req, res, next) => {
 
 const validarTagId = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const id = (req.params.tagId || req.params.id)
         const tag = await Tag.findByPk(id)
         if (!tag) {
             return res.status(404).json({ message: "Tag no encontrada" })
@@ -35,4 +35,4 @@ const validarTagId = async (req, res, next) => {
     }
 }
 
-module.exports = {validarTagId, validarTagIdConPost}
+module.exports = { validarTagId, validarTagIdConPost }

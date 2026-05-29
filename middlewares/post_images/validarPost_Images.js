@@ -1,4 +1,4 @@
-const post_ImagesSchema = require("../../schemas/post_images.schema")
+const { post_ImagesSchema } = require("../../schemas/post_images.schema")
 
 const validarPost_Images = (req, res, next) => {
     const { error } = post_ImagesSchema.validate(req.body)

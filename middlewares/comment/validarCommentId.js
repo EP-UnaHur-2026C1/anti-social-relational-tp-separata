@@ -2,7 +2,7 @@ const { Comment, User } = require("../../models")
 
 const validarCommentIdConUserYPost = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const id = (req.params.commentId || req.params.id)
         const comment = await Comment.findByPk(id, {
             attributes:["descripcion", "postId", "createdAt", "esVisible"],
             include: {

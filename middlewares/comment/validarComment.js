@@ -1,4 +1,4 @@
-const commentSchema = require("../../schemas/comment.schema")
+const { commentSchema } = require("../../schemas/comment.schema")
 
 const validarComment = (req, res, next) => {
     const { error } = commentSchema.validate(req.body)
