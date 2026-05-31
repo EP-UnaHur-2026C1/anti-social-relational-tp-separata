@@ -30,11 +30,10 @@ const crearPost_Image = async (req, res) => {
 
 const actualizarPost_Image = async (req, res) => {
     try {
-        const { url, postId } = req.body
+        const { url } = req.body
         const post_Image = req.post_Image
         await post_Image.update({
-            url,
-            postId
+            url
         })
         res.status(200).json(post_Image)
     } catch (error) {

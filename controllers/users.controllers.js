@@ -67,60 +67,10 @@ const eliminarUsuario = async (req, res) => {
     }
 }
 
-const obtenerPostsDeUnUser = (req, res) => {
-    const user = req.user
-    res.status(200).json(user.posts)
-}
-
-const obtenerUnPostDeUnUser = (req, res) => {
-    const post = req.post
-    res.status(200).json(post)
-}
-
-const publicarPost = async (req, res) => {
-    try {
-        const { descripcion } = req.body
-        const { id } = req.params
-        await Post.create({
-            descripcion,
-            userId: id
-        })
-        res.status(200).json({ message: "Post publicado correctamente" })
-    } catch (error) {
-        res.status(500).json({ error: "Error al publicar el post." })
-    }
-}
-
-const obtenerCommentsDeUnUser = (req, res) => {
-    const user = req.user
-    res.status(200).json(user.comments)
-}
-
-const publicarComment = async (req, res) => {
-    try {
-        const { descripcion } = req.body
-        const { postId, id } = req.params
-        await Comment.create({
-            descripcion,
-            postId,
-            userId: id
-        })
-        res.status(200).json({ message: "Comment publicado correctamente" })
-    } catch (error) {
-        res.status(500).json({ error: "Error al publicar el comment." })
-    }
-}
-
-
 module.exports = {
     obtenerUsuarios,
     obtenerUsuario,
     crearUsuario,
     actualizarUsuario,
-    eliminarUsuario,
-    obtenerPostsDeUnUser,
-    obtenerUnPostDeUnUser,
-    publicarPost,
-    obtenerCommentsDeUnUser,
-    publicarComment
+    eliminarUsuario
 }

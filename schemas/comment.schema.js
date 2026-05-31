@@ -20,7 +20,7 @@ const commentSchema = Joi.object({
     }),
 })
 
-const commentDescripcionSchema = Joi.object({
+const commentActualizarSchema = Joi.object({
     descripcion: Joi.string().min(10).max(300).required().messages({
         "string.base": "La descripción debe ser un texto",
         "string.empty": "La descripción es obligatoria",
@@ -31,4 +31,4 @@ const commentDescripcionSchema = Joi.object({
 })
 
 
-module.exports = { commentSchema, commentDescripcionSchema }
+module.exports = { commentSchema, commentActualizarSchema }

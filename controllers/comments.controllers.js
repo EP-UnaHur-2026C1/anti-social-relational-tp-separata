@@ -3,7 +3,7 @@ const { Comment, User } = require("../models")
 const obtenerComentarios = async (req, res) => {
     try {
         const comments = await Comment.findAll({
-            attributes:["descripcion", "postId", "createdAt", "esVisible"],
+            attributes: ["descripcion", "postId", "createdAt", "esVisible"],
             include: {
                 model: User,
                 as: "user",
@@ -56,14 +56,51 @@ const eliminarComentario = async (req, res) => {
         await comment.destroy()
         res.status(200).json({ message: "Comentario eliminado correctamente." })
     } catch (error) {
-        res.status(500).json({ error: "Error al eliminar el comentario" })
+        res.status(500).json({ error: "Error al eliminar el comentario." })
     }
 }
+
+const obtenerComentariosDeUnPost = async (req, res) => {
+    try {
+        const comments = await Comment.findAll({
+            attributes: ["descripcion", "createdAt"],
+            where: {
+                postId: req.post.id,
+                esVisible: true
+            },
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["nickName"]
+            }
+        })
+        res.status(200).json(comments)
+    } catch (error) {
+        res.status(500).json({ error: "Error al encontrar los comentarios del post." })
+    }
+}
+
+const obtenerComentariosDeUnUser = async (req, res) => {
+    try {
+        const comments = await Comment.findAll({
+            attributes: ["descripcion", "postId", "createdAt", "esVisible"],
+            where: {
+                userId: req.user.id
+            }
+        })
+        res.status(200).json(comments)
+    } catch (error) {
+        res.status(500).json({ error: "Error al encontrar los comentarios del usuario." })
+    }
+}
+
 
 module.exports = {
     obtenerComentarios,
     obtenerComentario,
     crearComentario,
     actualizarComentario,
-    eliminarComentario
+    eliminarComentario,
+    obtenerComentariosDeUnPost,
+    obtenerComentariosDeUnUser
 }

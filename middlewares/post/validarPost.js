@@ -1,4 +1,4 @@
-const { postSchema } = require("../../schemas/post.schema")
+const { postSchema, postActualizarSchema } = require("../../schemas/post.schema")
 
 const validarPost = (req, res, next) => {
     const { error } = postSchema.validate(req.body)
@@ -8,4 +8,15 @@ const validarPost = (req, res, next) => {
     next()
 }
 
-module.exports = validarPost
+const validarPostDatos = (req, res, next) => {
+    const { error } = postActualizarSchema.validate(req.body)
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message })
+    }
+    if (req.user) {
+        req.body.userId = req.user.id
+    }
+    next()
+}
+
+module.exports = { validarPost, validarPostDatos }

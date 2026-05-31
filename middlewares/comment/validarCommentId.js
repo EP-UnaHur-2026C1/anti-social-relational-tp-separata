@@ -2,9 +2,9 @@ const { Comment, User } = require("../../models")
 
 const validarCommentIdConUserYPost = async (req, res, next) => {
     try {
-        const id = (req.params.commentId || req.params.id)
+        const { id } = req.params
         const comment = await Comment.findByPk(id, {
-            attributes:["descripcion", "postId", "createdAt", "esVisible"],
+            attributes: ["descripcion", "postId", "createdAt", "esVisible"],
             include: {
                 model: User,
                 as: "user",
@@ -17,10 +17,9 @@ const validarCommentIdConUserYPost = async (req, res, next) => {
         req.comment = comment
         next()
     } catch (error) {
-        res.status(500).json({error: "Error al obtener el comentario."})
+        res.status(500).json({ error: "Error al obtener el comentario." })
     }
 }
-
 
 const validarCommentId = async (req, res, next) => {
     try {
@@ -36,4 +35,4 @@ const validarCommentId = async (req, res, next) => {
     }
 }
 
-module.exports = {validarCommentId, validarCommentIdConUserYPost}
+module.exports = { validarCommentId, validarCommentIdConUserYPost }

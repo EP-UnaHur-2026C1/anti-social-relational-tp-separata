@@ -15,7 +15,7 @@ const postSchema = Joi.object({
     })
 })
 
-const postDescripcionSchema = Joi.object({
+const postActualizarSchema = Joi.object({
     descripcion: Joi.string().min(10).max(500).required().messages({
         "string.base": "La descripción debe ser un texto",
         "string.empty": "La descripción es obligatoria",
@@ -25,4 +25,4 @@ const postDescripcionSchema = Joi.object({
     })
 })
 
-module.exports = { postSchema, postDescripcionSchema }
+module.exports = { postSchema, postActualizarSchema }

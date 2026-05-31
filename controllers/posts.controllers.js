@@ -78,37 +78,37 @@ const eliminarPost = async (req, res) => {
     }
 }
 
-const obtenerCommentsDeUnPost = (req, res) => {
-    const post = req.post
-    res.status(200).json(post.comments)
-}
-
-const obtenerCommentDeUnPost = (req, res) => {
-    const comment = req.comment
-    res.status(200).json(comment)
-}
-
-const asociarImage = async (req, res) => {
+const obtenerPostsDeUnUser = async (req, res) => {
     try {
-        const { url } = req.body
-        const { id } = req.params
-        await Post_Images.create({
-            url,
-            postId: id
+        const posts = await Post.findAll({
+            attributes: ["descripcion", "createdAt"],
+            where: {
+                userId: req.user.id
+            },
+            include: [
+                {
+                    model: Post_Images,
+                    as: "images",
+                    attributes: ["url"]
+                },
+                {
+                    model: Tag,
+                    as: "tags",
+                    attributes: ["id", "nombre"],
+                    through: {
+                        attributes: []
+                    }
+                },
+                {
+                    model: Comment,
+                    as: "comments",
+                    attributes: ["id"]
+                }
+            ]
         })
-        res.status(200).json({ message: "Image asociada correctamente" })
+        res.status(200).json(posts)
     } catch (error) {
-        res.status(500).json({ message: "Error al asociar image al post" })
-    }
-}
-
-const desasociarImage = async (req, res) => {
-    try {
-        const image = req.post_Image
-        await image.destroy()
-        res.status(200).json({ message: "Image desasociada correctamente" })
-    } catch (error) {
-        res.status(500).json({ message: "Error al desasociar image al post" })
+        res.status(500).json({ error: "Error al obtener los posts del usuario." })
     }
 }
 
@@ -140,10 +140,7 @@ module.exports = {
     crearPost,
     actulizarPost,
     eliminarPost,
-    obtenerCommentsDeUnPost,
-    obtenerCommentDeUnPost,
-    asociarImage,
-    desasociarImage,
+    obtenerPostsDeUnUser,
     asociarTag,
     desasociarTag
 }
